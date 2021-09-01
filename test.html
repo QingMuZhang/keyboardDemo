@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <link rel="stylesheet" href="text.css">
+    <title>动态数字键盘</title>
+</head>
+<body>
+    <div class="pay-top">
+        <!--<img class="lklogo" src="img/lianke.png">-->
+        <div class="pay-shop-info">
+            <span class="shop-name">付款给：{{付款对象名}}</span>
+        </div>
+        <div class="paymoneylogo">
+            <span>￥</span>
+        </div>
+        <label class="inputlabel" id="paymoney" type="text"></label>
+    </div>
+    <div class="payinfo">
+        <table cellspacing="0" cellpadding="0">
+            <tr>
+                <td class="paynum table-left">1</td>
+                <td class="paynum">2</td>
+                <td class="paynum">3</td>
+                <td id="pay-return">
+                    <div class="keybord-return"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="paynum table-left">4</td>
+                <td class="paynum">5</td>
+                <td class="paynum">6</td>
+                <td rowspan="3" class="pay">
+                    <a href="javascript:return false;">
+                        <div class="a-pay">
+                            <p>付款</p>
+                       
+                        </div>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td class="paynum table-left">7</td>
+                <td class="paynum">8</td>
+                <td class="paynum">9</td>
+            </tr>
+            <tr>
+                <td id="pay-zero" colspan="2" class="payzero table-left table-bottom">0</td>
+                <td id="pay-float" class="table-bottom">.</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script src="jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".payinfo").slideDown(300);
+        var $paymoney = $("#paymoney");
+        $("#paymoney").focus(function () {
+            $(".payinfo").slideDown(300);
+            document.activeElement.blur();
+        });
+        $(".paynum").each(function () {
+            $(this).click(function () {
+                if (($paymoney.text()).indexOf(".") != -1 && ($paymoney.text()).substring(($paymoney.text()).indexOf(".") + 1, ($paymoney.text()).length).length == 2) {
+                    return;
+                }
+                if ($.trim($paymoney.text()) == "0") {
+                    return;
+                }
+                if (parseInt($paymoney.text()) > 10000 && $paymoney.text().indexOf(".") == -1) {
+                    return;
+                }
+                $paymoney.text($paymoney.text() + $(this).text());
+            });
+        });
+
+        $("#pay-return").click(function () {
+            $paymoney.text(($paymoney.text()).substring(0, ($paymoney.text()).length - 1));
+            if (!$paymoney.text()) {
+                $('.pay').addClass('pay-disabled').find('a').attr('href', 'javascript:return false;');
+            }
+        });
+
+        $("#pay-zero").click(function () {
+            if (($paymoney.text()).indexOf(".") != -1 && ($paymoney.text()).substring(($paymoney.text()).indexOf(".") + 1, ($paymoney.text()).length).length == 2) {
+                return;
+            }
+            if ($.trim($paymoney.text()) == "0") {
+                return;
+            }
+            if (parseInt($paymoney.text()) > 10000 && $paymoney.text().indexOf(".") == -1) {
+                return;
+            }
+            $paymoney.text($paymoney.text() + $(this).text());
+        });
+
+        $("#pay-float").click(function () {
+            if ($.trim($paymoney.text()) == "") {
+                return;
+            }
+
+            if (($paymoney.text()).indexOf(".") != -1) {
+                return;
+            }
+
+            if (($paymoney.text()).indexOf(".") != -1) {
+                return;
+            }
+            $paymoney.text($paymoney.text() + $(this).text());
+        });
+        $('.pay').click(function () {
+            alert("支付金额为"+$paymoney.text())
+        });
+    })
+</script> 
+<!--自适应布局-->
+<script>
+	(function () {
+		var designW = 750;  //设计稿宽
+		var font_rate = 100;
+		//适配
+		document.getElementsByTagName("html")[0].style.fontSize = document.body.offsetWidth / designW * font_rate + "px";
+		document.getElementsByTagName("body")[0].style.fontSize = document.body.offsetWidth / designW * font_rate + "px";
+
+		//监测窗口大小变化
+		window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function () {
+			document.getElementsByTagName("html")[0].style.fontSize = document.body.offsetWidth / designW * font_rate + "px";
+			document.getElementsByTagName("body")[0].style.fontSize = document.body.offsetWidth / designW * font_rate + "px";
+		}, false);
+	})();
+</script>
+</html>
